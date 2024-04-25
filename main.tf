@@ -12,17 +12,17 @@ terraform {
 }
 
 module "namespace" {
-  source = "./namespace.tf"
+  source = "./resources/namespace"
 }
 
 module "mysql" {
-  source = "./mysql.tf"
+  source = "./resources/mysql"
 }
 
 module "nginx" {
-  source = "./nginx.tf"
+  source = "./resources/nginx"
 }
 
 module "minio" {
-  source = "./minio.tf"
+  source = "./resources/minio"
 }
