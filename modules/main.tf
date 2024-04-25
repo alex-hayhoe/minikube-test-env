@@ -2,9 +2,9 @@ provider "kubernetes" {
   config_context_cluster   = "minikube"
 }
 
-resource "kubernetes_namespace" "dev" {
+resource "kubernetes_namespace" "namespace" {
   metadata {
-    name = "var.namespace_name"
+    name = var.namespace_name
   }
 }
 
@@ -40,7 +40,7 @@ resource "kubernetes_deployment" "mysql" {
             value = "var.mysql_root_password"
           }
 
-          ports {
+          port {
             container_port = 3306
           }
         }
@@ -51,7 +51,7 @@ resource "kubernetes_deployment" "mysql" {
 
 resource "kubernetes_deployment" "nginx" {
   metadata {
-    namespace = kubernetes_namespace.dev.metadata.0.name
+    namespace = var.namespace_name
     name      = "nginx"
   }
 
@@ -76,7 +76,7 @@ resource "kubernetes_deployment" "nginx" {
           name  = "nginx"
           image = "nginx:latest"
 
-          ports {
+          port {
             container_port = 80
           }
         }
@@ -87,7 +87,7 @@ resource "kubernetes_deployment" "nginx" {
 
 resource "kubernetes_deployment" "minio" {
   metadata {
-    namespace = kubernetes_namespace.dev.metadata.0.name
+    namespace = var.namespace_name
     name      = "minio"
   }
 
@@ -122,7 +122,7 @@ resource "kubernetes_deployment" "minio" {
             value = "var.minio_secret_key"
           }
 
-          ports {
+          port {
             container_port = 9000
           }
 
