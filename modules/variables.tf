@@ -1,6 +1,6 @@
 variable "namespace_name" {
   description = "The name of the Kubernetes namespace."
-  default     = "dev"
+  default     = "default"
 }
 
 variable "mysql_root_password" {
@@ -16,4 +16,9 @@ variable "minio_access_key" {
 variable "minio_secret_key" {
   description = "The secret key for MinIO."
   default     = "secret_key"
+}
+
+variable "istio_namespace" {
+  description = "The name of the Istio namespace."
+  default     = "default"
 }
