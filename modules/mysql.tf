@@ -73,7 +73,7 @@ resource "kubernetes_pod" "mysql-init" {
         value = var.mysql_root_password
       }
 
-      ports {
+      port {
         container_port = 3306
       }
 
