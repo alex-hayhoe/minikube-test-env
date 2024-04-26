@@ -1,11 +1,3 @@
-terraform {
-  required_providers {
-    kubernetes = {
-      source = "hashicorp/mysql"
-    }
-  }
-}
-
 resource "kubernetes_persistent_volume_claim" "mysql_data" {
   metadata {
     name      = "mysql-pvc"
@@ -70,6 +62,9 @@ resource "kubernetes_deployment" "mysql" {
         container {
           name  = "mysql"
           image = "mysql:latest"
+          envFrom:
+            - configMapRef:
+                name: mysql-config
 
           env {
             name  = "MYSQL_ROOT_PASSWORD"
@@ -79,15 +74,6 @@ resource "kubernetes_deployment" "mysql" {
           env {
             name  = "MYSQL_DATABASE"
             value = var.mysql_db_name
-          }
-          env {
-            name  = "MYSQL_USER"
-            value = var.mysql_username
-          }          
-
-          env {
-            name  = "MYSQL_USER_PW"
-            value = var.mysql_username_password
           }
 
           port {
@@ -159,10 +145,17 @@ resource "kubernetes_job" "mysql-init" {
   }
 }
 
-resource "mysql_user" "user" {
-  user               = var.mysql_username
-  host               = var.mysql_db_name
-  plaintext_password = var.mysql_username_password
+resource "kubernetes_config_map" "mysql-laravel" {
+  metadata {
+    name = "mysql-config-map"
+    namespace = kubernetes_namespace.demo_app_ns.metadata.0.name
+  }
+
+  data = {
+    mysql-server = "mysql"
+    mysql-database-name = var.mysql_db_name
+    mysql-user-username = var.mysql_username
+  }
 }
 
 # resource "kubernetes_job" "mysql-init-user" {
