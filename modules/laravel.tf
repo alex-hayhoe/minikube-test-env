@@ -77,7 +77,7 @@ resource "kubernetes_deployment" "laravel" {
             value = var.minio_secret_key
           }
 
-          ports {
+          port {
             container_port = 80
           }
         }
