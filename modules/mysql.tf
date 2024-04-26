@@ -1,15 +1,3 @@
-resource "kubernetes_config_map" "demo_app_cm" {
-  metadata {
-    name = "mysql-config-map"
-    namespace = var.namespace_name
-  }
-
-  data = {
-    mysql-database-name = var.mysql_db_name
-    mysql-user-username = var.mysql_username
-  }
-}
-
 resource "kubernetes_persistent_volume_claim" "mysql_data" {
   metadata {
     name      = "mysql-pvc"
@@ -78,6 +66,11 @@ resource "kubernetes_deployment" "mysql" {
             name  = "MYSQL_ROOT_PASSWORD"
             value = var.mysql_root_password
           }
+          
+          env {
+            name  = "MYSQL_DATABASE"
+            value = var.mysql_db_name
+          }          
 
           port {
             container_port = 3306
