@@ -1,6 +1,6 @@
 variable "namespace_name" {
   description = "The name of the Kubernetes namespace."
-  default     = "dev"
+  default     = "default"
 }
 
 variable "mysql_root_password" {
