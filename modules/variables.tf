@@ -13,6 +13,11 @@ variable "mysql_username" {
   default     = "default"
 }
 
+variable "mysql_username_password" {
+  description = "The username password for MySQL."
+  default     = "default"
+}
+
 variable "mysql_db_name" {
   description = "The db name for MySQL."
   default     = "default"

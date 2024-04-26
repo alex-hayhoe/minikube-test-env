@@ -71,8 +71,16 @@ resource "kubernetes_deployment" "mysql" {
           env {
             name  = "MYSQL_DATABASE"
             value = var.mysql_db_name
+          }
+          env {
+            name  = "MYSQL_USER"
+            value = var.mysql_username
           }          
 
+          env {
+            name  = "MYSQL_USER_PW"
+            value = var.mysql_password
+          }   
           port {
             container_port = 3306
           }
