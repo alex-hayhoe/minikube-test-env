@@ -35,60 +35,99 @@ resource "kubernetes_service" "mysql" {
   }
 }
 
-resource "kubernetes_pod" "mysql-init" {
+resource "kubernetes_deployment" "mysql" {
+  metadata {
+    namespace = var.namespace_name
+    name      = "mysql"
+  }
+
+
+  spec {
+    replicas = 1
+
+    selector {
+      match_labels = {
+        app = "mysql"
+      }
+    }
+
+    template {
+      metadata {
+        labels = {
+          app = "mysql"
+        }
+      }
+
+      spec {
+        container {
+          name  = "mysql"
+          image = "mysql:latest"
+
+          env {
+            name  = "MYSQL_ROOT_PASSWORD"
+            value = var.mysql_root_password
+          }
+          
+          env {
+            name  = "MYSQL_DATABASE"
+            value = var.mysql_db_name
+          }          
+
+          port {
+            container_port = 3306
+          }
+
+        
+          volume_mount {
+            name       = "mysql-data"
+            mount_path = "/var/lib/mysql"
+          }
+        }
+
+        volume {
+           name = "mysql-data"
+           persistent_volume_claim {
+           claim_name = kubernetes_persistent_volume_claim.mysql_data.metadata[0].name
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_job" "mysql-init" {
   metadata {
     name      = "mysql-init"
     namespace = var.namespace_name
   }
 
   spec {
-    init_container {
-      name  = "init-mysql"
-      image = "mysql:latest"
-
-      env {
-        name  = "MYSQL_ROOT_PASSWORD"
-        value = var.mysql_root_password
+    template {
+      metadata {
+        labels = {
+          app = "mysql-init"
+        }
       }
 
-      env {
-        name  = "MYSQL_DATABASE"
-        value = var.mysql_db_name
-      }
+      spec {
+        container {
+          name  = "mysql-init"
+          image = "mysql:latest"
 
-      volume_mount {
-        name       = "mysql-data"
-        mount_path = "/var/lib/mysql"
-      }
+          env {
+            name  = "MYSQL_ROOT_PASSWORD"
+            value = var.mysql_root_password
+          }
 
-      command = ["sh", "-c", "mysql -h localhost -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"]
+          env {
+            name  = "MYSQL_DATABASE"
+            value = var.database_name
+          }
 
-      wait_for_initialization = false
-    }
+          command = ["sh", "-c", "mysql -h localhost -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"]
+        }
 
-    container {
-      name  = "mysql"
-      image = "mysql:latest"
-
-      env {
-        name  = "MYSQL_ROOT_PASSWORD"
-        value = var.mysql_root_password
-      }
-
-      port {
-        container_port = 3306
-      }
-
-      volume_mount {
-        name       = "mysql-data"
-        mount_path = "/var/lib/mysql"
-      }
-    }
-
-    volume {
-      name = "mysql-data"
-      persistent_volume_claim {
-        claim_name = kubernetes_persistent_volume_claim.mysql_data.metadata[0].name
+        restart_policy = "Never"
       }
     }
   }
