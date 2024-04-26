@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    kubernetes = {
+      source = "hashicorp/mysql"
+    }
+  }
+}
+
 resource "kubernetes_persistent_volume_claim" "mysql_data" {
   metadata {
     name      = "mysql-pvc"
