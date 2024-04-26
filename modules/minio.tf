@@ -27,15 +27,15 @@ resource "kubernetes_deployment" "minio" {
 
           env {
             name  = "MINIO_ACCESS_KEY"
-            value = var.minio_access_key
+            value = "var.minio_access_key"
           }
 
           env {
             name  = "MINIO_SECRET_KEY"
-            value = var.minio_secret_key
+            value = "var.minio_secret_key"
           }
 
-          ports {
+          port {
             container_port = 9000
           }
 

@@ -1,3 +1,4 @@
+
 resource "kubernetes_deployment" "nginx" {
   metadata {
     namespace = var.namespace_name
@@ -25,7 +26,7 @@ resource "kubernetes_deployment" "nginx" {
           name  = "nginx"
           image = "nginx:latest"
 
-          ports {
+          port {
             container_port = 80
           }
         }

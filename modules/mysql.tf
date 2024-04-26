@@ -1,3 +1,4 @@
+
 resource "kubernetes_deployment" "mysql" {
   metadata {
     namespace = var.namespace_name
@@ -27,10 +28,10 @@ resource "kubernetes_deployment" "mysql" {
 
           env {
             name  = "MYSQL_ROOT_PASSWORD"
-            value = var.mysql_root_password
+            value = "var.mysql_root_password"
           }
 
-          ports {
+          port {
             container_port = 3306
           }
         }
