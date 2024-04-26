@@ -38,7 +38,7 @@ resource "kubernetes_service" "mysql" {
 resource "kubernetes_deployment" "mysql" {
   metadata {
     namespace = var.namespace_name
-    name      = "mysql-laravel"
+    name      = "mysql"
   }
 
 
@@ -151,17 +151,10 @@ resource "kubernetes_job" "mysql-init" {
   }
 }
 
-resource "kubernetes_config_map" "mysql-laravel" {
-  metadata {
-    name = "mysql-config-map"
-    namespace = var.namespace_name
-  }
-
-  data = {
-    mysql-server = mysql-laravel
-    mysql-database-name = var.mysql_db_name
-    mysql-user-username = var.mysql_username
-  }
+resource "mysql_user" "user" {
+  user               = var.mysql_username
+  host               = var.mysql_db_name
+  plaintext_password = var.mysql_username_password
 }
 
 # resource "kubernetes_job" "mysql-init-user" {
