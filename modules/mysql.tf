@@ -151,94 +151,94 @@ resource "kubernetes_job" "mysql-init" {
   }
 }
 
-resource "kubernetes_job" "mysql-init-user" {
-  metadata {
-    name      = "mysql-init-user"
-    namespace = var.namespace_name
-  }
+# resource "kubernetes_job" "mysql-init-user" {
+#   metadata {
+#     name      = "mysql-init-user"
+#     namespace = var.namespace_name
+#   }
 
-  spec {
-    template {
-      metadata {
-        labels = {
-          app = "mysql-init-user"
-        }
-      }
+#   spec {
+#     template {
+#       metadata {
+#         labels = {
+#           app = "mysql-init-user"
+#         }
+#       }
 
-      spec {
-        container {
-          name  = "mysql-init-user"
-          image = "mysql:latest"
+#       spec {
+#         container {
+#           name  = "mysql-init-user"
+#           image = "mysql:latest"
 
-          env {
-            name  = "MYSQL_ROOT_PASSWORD"
-            value = var.mysql_root_password
-          }
+#           env {
+#             name  = "MYSQL_ROOT_PASSWORD"
+#             value = var.mysql_root_password
+#           }
 
-          env {
-            name  = "MYSQL_USER"
-            value = var.mysql_username
-          }          
+#           env {
+#             name  = "MYSQL_USER"
+#             value = var.mysql_username
+#           }          
 
-          env {
-            name  = "MYSQL_USER_PW"
-            value = var.mysql_username_password
-          }
+#           env {
+#             name  = "MYSQL_USER_PW"
+#             value = var.mysql_username_password
+#           }
 
-          env {
-            name  = "MYSQL_DATABASE"
-            value = var.mysql_db_name
-          }
+#           env {
+#             name  = "MYSQL_DATABASE"
+#             value = var.mysql_db_name
+#           }
         
-          command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED BY '${var.mysql_username_password}''"]
-        }
-      }
-    }
-  }
-}
+#           command = ["sh", "-c", "mysql -h mysql-service -P 3306  --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED BY '${var.mysql_username_password}''"]
+#         }
+#       }
+#     }
+#   }
+# }
 
-resource "kubernetes_job" "mysql-init-user-priviledges" {
-  metadata {
-    name      = "mysql-init-user-priviledges"
-    namespace = var.namespace_name
-  }
+# resource "kubernetes_job" "mysql-init-user-priviledges" {
+#   metadata {
+#     name      = "mysql-init-user-priviledges"
+#     namespace = var.namespace_name
+#   }
 
-  spec {
-    template {
-      metadata {
-        labels = {
-          app = "mysql-init-user-priviledges"
-        }
-      }
+#   spec {
+#     template {
+#       metadata {
+#         labels = {
+#           app = "mysql-init-user-priviledges"
+#         }
+#       }
 
-      spec {
-        container {
-          name  = "mysql-init-user-priviledges"
-          image = "mysql:latest"
+#       spec {
+#         container {
+#           name  = "mysql-init-user-priviledges"
+#           image = "mysql:latest"
 
-          env {
-            name  = "MYSQL_ROOT_PASSWORD"
-            value = var.mysql_root_password
-          }
+#           env {
+#             name  = "MYSQL_ROOT_PASSWORD"
+#             value = var.mysql_root_password
+#           }
 
-          env {
-            name  = "MYSQL_USER"
-            value = var.mysql_username
-          }          
+#           env {
+#             name  = "MYSQL_USER"
+#             value = var.mysql_username
+#           }          
 
-          env {
-            name  = "MYSQL_USER_PW"
-            value = var.mysql_username_password
-          }
+#           env {
+#             name  = "MYSQL_USER_PW"
+#             value = var.mysql_username_password
+#           }
 
-          env {
-            name  = "MYSQL_DATABASE"
-            value = var.mysql_db_name
-          }
+#           env {
+#             name  = "MYSQL_DATABASE"
+#             value = var.mysql_db_name
+#           }
         
-          command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'GRANT ALL PRIVILEGES ON '${var.mysql_db_name}' TO '${var.mysql_username}'@'localhost''"]
-        }
-      }
-    }
-  }
-}
+#           command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'GRANT ALL PRIVILEGES ON '${var.mysql_db_name}' TO '${var.mysql_username}'@'localhost''"]
+#         }
+#       }
+#     }
+#   }
+# }
