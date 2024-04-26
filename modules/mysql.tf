@@ -79,7 +79,7 @@ resource "kubernetes_deployment" "mysql" {
 
           env {
             name  = "MYSQL_USER_PW"
-            value = var.mysql_password
+            value = var.mysql_username_password
           }   
           port {
             container_port = 3306
