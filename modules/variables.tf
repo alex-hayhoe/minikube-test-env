@@ -8,6 +8,16 @@ variable "mysql_root_password" {
   default     = "root_password"
 }
 
+variable "mysql_username" {
+  description = "The username for MySQL."
+  default     = "default"
+}
+
+variable "mysql_db_name" {
+  description = "The db name for MySQL."
+  default     = "default"
+}
+
 variable "minio_access_key" {
   description = "The access key for MinIO."
   default     = "access_key"
