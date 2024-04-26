@@ -198,7 +198,7 @@ resource "kubernetes_job" "mysql-init-user" {
   }
 }
 
-resource "kubernetes_job" "mysql-init-user-privikedges" {
+resource "kubernetes_job" "mysql-init-user-priviledges" {
   metadata {
     name      = "mysql-init-user-priviledges"
     namespace = var.namespace_name
