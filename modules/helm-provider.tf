@@ -6,7 +6,7 @@ provider "helm" {
 
 resource "helm_release" "nginx_ingress" {
   name       = "nginx-ingress-controller"
-  namespace  = "var.namespace_name"
+  namespace  = var.namespace_name
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "nginx-ingress-controller"
 
