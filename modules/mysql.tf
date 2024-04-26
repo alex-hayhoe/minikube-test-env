@@ -1,3 +1,16 @@
+resource "kubernetes_config_map" "mysql-init-script" {
+  metadata {
+    name      = "mysql-init-script"
+    namespace = var.namespace_name
+  }
+
+  data = {
+    init.sql = <<-EOT
+      CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name};
+    EOT
+  }
+}
+
 resource "kubernetes_persistent_volume_claim" "mysql_data" {
   metadata {
     name      = "mysql-pvc"
