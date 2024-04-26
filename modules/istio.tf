@@ -1,9 +1,3 @@
-provider "helm" {
-  kubernetes {
-    // enter the relevant authentication
-  }
-}
-
 locals {
   istio_charts_url = "https://istio-release.storage.googleapis.com/charts"
 }
