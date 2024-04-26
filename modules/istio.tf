@@ -35,7 +35,7 @@ resource "helm_release" "istio-ingress" {
   repository = local.istio_charts_url
   chart      = "gateway"
   name       = "istio-ingress"
-  namespace  = kubernetes_namespace.istio-ingress-label.id
+  namespace  = var.istio_namespace
   version    = "1.12.1"
   depends_on = [helm_release.istiod]
 }
