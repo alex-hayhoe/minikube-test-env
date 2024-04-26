@@ -158,7 +158,6 @@ resource "kubernetes_config_map" "mysql-laravel" {
   }
 
   data = {
-    mysql-server = mysql
     mysql-database-name = var.mysql_db_name
     mysql-user-username = var.mysql_username
   }
