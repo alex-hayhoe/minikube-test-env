@@ -1,4 +1,23 @@
 
+resource "kubernetes_service" "mysql" {
+  metadata {
+    name      = "mysql-service"
+    namespace = var.namespace_name
+  }
+
+  spec {
+    selector = {
+      app = "mysql"
+    }
+
+    port {
+      protocol    = "TCP"
+      port        = 3306
+      target_port = 3306
+    }
+  }
+}
+
 resource "kubernetes_deployment" "mysql" {
   metadata {
     namespace = var.namespace_name

@@ -38,7 +38,7 @@ resource "kubernetes_deployment" "laravel" {
 
           env {
             name  = "DB_HOST"
-            value = "mysql"  # Assuming mysql-service is the service name for MySQL
+            value = "mysql-service"  # Assuming mysql-service is the service name for MySQL
           }
 
           env {
