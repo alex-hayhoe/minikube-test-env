@@ -69,6 +69,9 @@ resource "kubernetes_deployment" "mysql" {
 
           port {
             container_port = 3306
+          }
+
+        
           volume_mount {
             name       = "mysql-data"
             mount_path = "/var/lib/mysql"
@@ -76,9 +79,9 @@ resource "kubernetes_deployment" "mysql" {
         }
 
         volume {
-          name = "mysql-data"
-          persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim.mysql_data.metadata[0].name
+           name = "mysql-data"
+           persistent_volume_claim {
+           claim_name = kubernetes_persistent_volume_claim.mysql_data.metadata[0].name
           }
         }
       }
