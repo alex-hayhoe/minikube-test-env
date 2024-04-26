@@ -34,3 +34,22 @@ resource "kubernetes_deployment" "nginx" {
     }
   }
 }
+
+resource "kubernetes_service" "nginx-svc" {
+  metadata {
+    name = "nginx-example"
+    namespace = kubernetes_namespace.var.namespace_name.id
+  }
+  spec {
+    selector = {
+      App = kubernetes_deployment.nginx.spec.0.template.0.metadata[0].labels.App
+    }
+    port {
+      node_port   = 30201
+      port        = 80
+      target_port = 80
+    }
+
+    type = "NodePort"
+  }
+}
