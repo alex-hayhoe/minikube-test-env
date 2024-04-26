@@ -1,13 +1,12 @@
-resource "kubernetes_config_map" "mysql-init-script" {
+resource "kubernetes_config_map" "demo_app_cm" {
   metadata {
-    name      = "mysql-init-script"
+    name = "mysql-config-map"
     namespace = var.namespace_name
   }
 
   data = {
-    init.sql = <<-EOT
-      CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name};
-    EOT
+    mysql-database-name = var.mysql_db_name
+    mysql-user-username = var.mysql_username
   }
 }
 
