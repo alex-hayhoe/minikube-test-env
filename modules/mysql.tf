@@ -1,3 +1,20 @@
+resource "kubernetes_persistent_volume_claim" "mysql_data" {
+  metadata {
+    name      = "mysql-pvc"
+    namespace = var.namespace_name
+  }
+
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+
+
 
 resource "kubernetes_service" "mysql" {
   metadata {
@@ -52,6 +69,16 @@ resource "kubernetes_deployment" "mysql" {
 
           port {
             container_port = 3306
+          volume_mount {
+            name       = "mysql-data"
+            mount_path = "/var/lib/mysql"
+          }
+        }
+
+        volume {
+          name = "mysql-data"
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim.mysql_data.metadata[0].name
           }
         }
       }
