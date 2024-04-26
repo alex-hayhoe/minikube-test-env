@@ -153,7 +153,7 @@ resource "kubernetes_job" "mysql-init" {
 
 resource "kubernetes_job" "mysql-init-user" {
   metadata {
-    name      = "mysql-init"
+    name      = "mysql-init-user"
     namespace = var.namespace_name
   }
 
@@ -161,13 +161,13 @@ resource "kubernetes_job" "mysql-init-user" {
     template {
       metadata {
         labels = {
-          app = "mysql-init"
+          app = "mysql-init-user"
         }
       }
 
       spec {
         container {
-          name  = "mysql-init"
+          name  = "mysql-init-user"
           image = "mysql:latest"
 
           env {
