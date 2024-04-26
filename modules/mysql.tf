@@ -80,7 +80,8 @@ resource "kubernetes_deployment" "mysql" {
           env {
             name  = "MYSQL_USER_PW"
             value = var.mysql_username_password
-          }   
+          }
+
           port {
             container_port = 3306
           }
@@ -128,11 +129,21 @@ resource "kubernetes_job" "mysql-init" {
           }
 
           env {
+            name  = "MYSQL_USER"
+            value = var.mysql_username
+          }          
+
+          env {
+            name  = "MYSQL_USER_PW"
+            value = var.mysql_username_password
+          }
+
+          env {
             name  = "MYSQL_DATABASE"
             value = var.mysql_db_name
           }
 
-          command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"]
+          command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"] && ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${mysql_username_password}'"]
         }
 
         restart_policy = "Never"
