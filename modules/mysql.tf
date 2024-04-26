@@ -143,7 +143,7 @@ resource "kubernetes_job" "mysql-init" {
             value = var.mysql_db_name
           }
 
-          command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"] && ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${mysql_username_password}'"]
+          command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"] && ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${var.mysql_username_password}'"]
         }
 
         restart_policy = "Never"
