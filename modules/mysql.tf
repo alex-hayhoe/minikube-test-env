@@ -85,3 +85,4 @@ resource "kubernetes_deployment" "mysql" {
     }
   }
 }
+}
