@@ -62,9 +62,6 @@ resource "kubernetes_deployment" "mysql" {
         container {
           name  = "mysql"
           image = "mysql:latest"
-          envFrom:
-            - configMapRef:
-                name: mysql-config
 
           env {
             name  = "MYSQL_ROOT_PASSWORD"
@@ -116,27 +113,6 @@ resource "kubernetes_job" "mysql-init" {
         container {
           name  = "mysql-init"
           image = "mysql:latest"
-
-          env {
-            name  = "MYSQL_ROOT_PASSWORD"
-            value = var.mysql_root_password
-          }
-
-          env {
-            name  = "MYSQL_USER"
-            value = var.mysql_username
-          }          
-
-          env {
-            name  = "MYSQL_USER_PW"
-            value = var.mysql_username_password
-          }
-
-          env {
-            name  = "MYSQL_DATABASE"
-            value = var.mysql_db_name
-          }
-
           command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS '${var.mysql_db_name}''"]        
         }
         restart_policy = "Never"
@@ -145,64 +121,31 @@ resource "kubernetes_job" "mysql-init" {
   }
 }
 
-resource "kubernetes_config_map" "mysql-laravel" {
+
+ resource "kubernetes_job" "mysql-init-user" {
   metadata {
-    name = "mysql-config-map"
-    namespace = kubernetes_namespace.demo_app_ns.metadata.0.name
+    name      = "mysql-init-user"
+    namespace = var.namespace_name
   }
 
-  data = {
-    mysql-server = "mysql"
-    mysql-database-name = var.mysql_db_name
-    mysql-user-username = var.mysql_username
+  spec {
+   template {
+     metadata {
+       labels = {
+        app = "mysql-init-user"
+       }
+     }
+
+      spec {
+       container {
+        name  = "mysql-init-user"
+        image = "mysql:latest"
+        command = ["sh", "-c", "mysql -h mysql-service -P 3306  --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED BY '${var.mysql_username_password}''"]
+       }
+     }
+    }
   }
 }
-
-# resource "kubernetes_job" "mysql-init-user" {
-#   metadata {
-#     name      = "mysql-init-user"
-#     namespace = var.namespace_name
-#   }
-
-#   spec {
-#     template {
-#       metadata {
-#         labels = {
-#           app = "mysql-init-user"
-#         }
-#       }
-
-#       spec {
-#         container {
-#           name  = "mysql-init-user"
-#           image = "mysql:latest"
-
-#           env {
-#             name  = "MYSQL_ROOT_PASSWORD"
-#             value = var.mysql_root_password
-#           }
-
-#           env {
-#             name  = "MYSQL_USER"
-#             value = var.mysql_username
-#           }          
-
-#           env {
-#             name  = "MYSQL_USER_PW"
-#             value = var.mysql_username_password
-#           }
-
-#           env {
-#             name  = "MYSQL_DATABASE"
-#             value = var.mysql_db_name
-#           }
-        
-#           command = ["sh", "-c", "mysql -h mysql-service -P 3306  --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED BY '${var.mysql_username_password}''"]
-#         }
-#       }
-#     }
-#   }
-# }
 
 # resource "kubernetes_job" "mysql-init-user-priviledges" {
 #   metadata {
