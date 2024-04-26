@@ -151,6 +151,19 @@ resource "kubernetes_job" "mysql-init" {
   }
 }
 
+resource "kubernetes_config_map" "mysql-laravel" {
+  metadata {
+    name = "mysql-config-map"
+    namespace = var.namespace_name
+  }
+
+  data = {
+    mysql-server = mysql
+    mysql-database-name = var.mysql_db_name
+    mysql-user-username = var.mysql_username
+  }
+}
+
 # resource "kubernetes_job" "mysql-init-user" {
 #   metadata {
 #     name      = "mysql-init-user"
