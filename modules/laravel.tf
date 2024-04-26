@@ -53,7 +53,7 @@ resource "kubernetes_deployment" "laravel" {
 
           env {
             name  = "DB_USERNAME"
-            value = root  # MySQL username
+            value = "root"  # MySQL username
           }
 
           env {
