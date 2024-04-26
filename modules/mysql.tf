@@ -62,6 +62,8 @@ resource "kubernetes_pod" "mysql-init" {
       }
 
       command = ["sh", "-c", "mysql -h localhost -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"]
+
+      wait_for_initialization = false
     }
 
     container {
