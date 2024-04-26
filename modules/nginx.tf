@@ -45,22 +45,20 @@ resource "kubernetes_deployment" "nginx" {
   }
 }
 
+resource "helm_release" "nginx_ingress" {
+  name       = "nginx-ingress-controller"
+  namespace  = var.namespace_name
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "nginx-ingress-controller"
 
-resource "kubernetes_service" "nginx-svc" {
-  metadata {
-    name = "nginx-example"
-    namespace = var.namespace_name
+  set {
+    name  = "service.type"
+    value = "NodePort"
   }
-  spec {
-    selector = {
-      App = kubernetes_deployment.nginx.spec.0.template.0.metadata[0].labels.App
-    }
-    port {
-      node_port   = 30201
-      port        = 80
-      target_port = 80
-    }
 
-    type = "NodePort"
+  set {
+    name  = "service.nodePorts.http"
+    value = "30201"
   }
+  
 }
