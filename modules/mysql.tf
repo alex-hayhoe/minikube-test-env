@@ -192,7 +192,6 @@ resource "kubernetes_job" "mysql-init-user" {
         
           command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED BY '${var.mysql_username_password}''"]
         }
-        restart_policy = "Never"
       }
     }
   }
@@ -239,7 +238,6 @@ resource "kubernetes_job" "mysql-init-user-priviledges" {
         
           command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'GRANT ALL PRIVILEGES ON '${var.mysql_db_name}' TO '${var.mysql_username}'@'localhost''"]
         }
-        restart_policy = "Never"
       }
     }
   }
