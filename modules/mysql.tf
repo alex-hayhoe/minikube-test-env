@@ -5,7 +5,7 @@ resource "kubernetes_persistent_volume_claim" "mysql_data" {
   }
 
   spec {
-    access_modes = ["ReadWriteOnce"]
+    access_modes = ["ReadWriteMany"]
     resources {
       requests = {
         storage = "1Gi"
