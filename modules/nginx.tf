@@ -38,7 +38,7 @@ resource "kubernetes_deployment" "nginx" {
 resource "kubernetes_service" "nginx-svc" {
   metadata {
     name = "nginx-example"
-    namespace = kubernetes_namespace.var.namespace_name.id
+    namespace = var.namespace_name
   }
   spec {
     selector = {
