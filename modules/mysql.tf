@@ -121,7 +121,7 @@ resource "kubernetes_job" "mysql-init" {
 
           env {
             name  = "MYSQL_DATABASE"
-            value = var.database_name
+            value = var.mysql_db_name
           }
 
           command = ["sh", "-c", "mysql -h localhost -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS ${var.mysql_db_name}'"]
