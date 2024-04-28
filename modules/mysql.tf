@@ -35,7 +35,7 @@ resource "kubernetes_service" "mysql" {
   }
 }
 
-resource "kubernetes_deployment" "mysql" {
+resource "kubernetes_stateful_set" "mysql" {
   metadata {
     namespace = var.namespace_name
     name      = "mysql"
