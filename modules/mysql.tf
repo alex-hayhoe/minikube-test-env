@@ -58,7 +58,6 @@ resource "kubernetes_stateful_set" "mysql" {
         }
       }
 
-      spec {
         container {
           name  = "mysql"
           image = "mysql:latest"
@@ -93,7 +92,6 @@ resource "kubernetes_stateful_set" "mysql" {
       }
     }
   }
-}
 
 resource "kubernetes_job" "mysql-init" {
   metadata {
