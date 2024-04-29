@@ -1,0 +1,14 @@
+.terraform/
+#terraform.tfstate
+#terraform.tfstate.backup
+*.yaml
+.DS_Store
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+.terraform.lock.hcl

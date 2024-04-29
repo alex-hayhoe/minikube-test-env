@@ -1,3 +1,19 @@
+resource "kubernetes_persistent_volume_claim" "minio_data" {
+  metadata {
+    name      = "minio-pvc"
+    namespace = var.namespace_name
+  }
+
+  spec {
+    access_modes = ["ReadWriteMany"]
+    resources {
+      requests = {
+        storage = "1Gi"
+      }
+    }
+  }
+}
+
 resource "kubernetes_deployment" "minio" {
   metadata {
     namespace = var.namespace_name
@@ -35,6 +51,16 @@ resource "kubernetes_deployment" "minio" {
             value = "var.minio_secret_key"
           }
 
+          env {
+            name  = "MINIO_ROOT_USER"
+            value = "var.minio_user"
+          }
+
+          env {
+            name  = "MINIO_ROOT_PASSWORD"
+            value = "var.minio_user_password"
+          }
+
           port {
             container_port = 9000
           }
@@ -45,16 +71,18 @@ resource "kubernetes_deployment" "minio" {
           ]
 
           volume_mount {
-            name       = "minio-storage"
+            name       = "minio-data"
             mount_path = "/data"
           }
         }
-
+      
         volume {
-          name = "minio-storage"
-          empty_dir {}
+           name = "minio-data"
+           persistent_volume_claim {
+           claim_name = kubernetes_persistent_volume_claim.minio_data.metadata[0].name
         }
       }
     }
   }
+}
 }

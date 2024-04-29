@@ -1,4 +1,10 @@
 
+provider "helm" {
+  kubernetes {
+    config_path = "~/.kube/config"
+  }
+}
+
 resource "kubernetes_deployment" "nginx" {
   metadata {
     namespace = var.namespace_name
@@ -22,6 +28,14 @@ resource "kubernetes_deployment" "nginx" {
       }
 
       spec {
+        volume {
+          name = "nginx-volume"
+
+          config_map {
+            name = "nginx-config"
+          }
+        }
+
         container {
           name  = "nginx"
           image = "nginx:latest"
