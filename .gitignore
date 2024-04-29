@@ -1,0 +1,8 @@
+.terraform.lock.hcl
+dev
+dev.backup
+terraform.tfstate
+terraform.tfstate.backup
+test
+test.backup
+minikube-test-env/modules/.terraform/*
