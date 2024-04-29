@@ -1,0 +1,260 @@
+{
+  "version": 4,
+  "terraform_version": "1.8.2",
+  "serial": 11,
+  "lineage": "197ebc8f-8054-45f4-bae4-6aee8e4853dc",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "kubernetes_config_map",
+      "name": "nginx_config",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "binary_data": null,
+            "data": {
+              "default.conf": "# nginx configuration\n\nupstream allworker {\n    server php:9000;\n}\n\nserver {\n\n    listen 80 default_server;\n    listen [::]:80 default_server;\n\n    server_name localhost;\n\n    root /var/www/public;\n    index index.php index.html;\n\n    location / {\n        try_files $uri /index.php?$args;\n    }\n\n    location ~ \\.php$ {\n        #fastcgi_keep_conn on;\n        fastcgi_pass   allworker;\n        fastcgi_index  index.php;\n        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;\n        include        fastcgi_params;\n    }\n}"
+            },
+            "id": "dev/nginx-config",
+            "immutable": false,
+            "metadata": [
+              {
+                "annotations": null,
+                "generate_name": "",
+                "generation": 0,
+                "labels": {
+                  "name": "nginx-config"
+                },
+                "name": "nginx-config",
+                "namespace": "dev",
+                "resource_version": "135515",
+                "uid": "bd845bcb-8b99-45b4-ab0d-103bdc217b89"
+              }
+            ]
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "kubernetes_persistent_volume_claim",
+      "name": "minio_data",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "dev/minio-pvc",
+            "metadata": [
+              {
+                "annotations": null,
+                "generate_name": "",
+                "generation": 0,
+                "labels": null,
+                "name": "minio-pvc",
+                "namespace": "dev",
+                "resource_version": "135536",
+                "uid": "d9fcd19a-c78e-4c06-87c4-4856843b929d"
+              }
+            ],
+            "spec": [
+              {
+                "access_modes": [
+                  "ReadWriteMany"
+                ],
+                "resources": [
+                  {
+                    "limits": null,
+                    "requests": {
+                      "storage": "1Gi"
+                    }
+                  }
+                ],
+                "selector": [],
+                "storage_class_name": "standard",
+                "volume_mode": "Filesystem",
+                "volume_name": "pvc-d9fcd19a-c78e-4c06-87c4-4856843b929d"
+              }
+            ],
+            "timeouts": null,
+            "wait_until_bound": true
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDB9fQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "kubernetes_service",
+      "name": "nginx",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "dev/nginx",
+            "metadata": [
+              {
+                "annotations": null,
+                "generate_name": "",
+                "generation": 0,
+                "labels": {
+                  "app": "nginx"
+                },
+                "name": "nginx",
+                "namespace": "dev",
+                "resource_version": "135525",
+                "uid": "edd13800-ca91-421f-bf3e-590ce7c4d3d1"
+              }
+            ],
+            "spec": [
+              {
+                "allocate_load_balancer_node_ports": true,
+                "cluster_ip": "10.110.178.79",
+                "cluster_ips": [
+                  "10.110.178.79"
+                ],
+                "external_ips": null,
+                "external_name": "",
+                "external_traffic_policy": "Cluster",
+                "health_check_node_port": 0,
+                "internal_traffic_policy": "Cluster",
+                "ip_families": [
+                  "IPv4"
+                ],
+                "ip_family_policy": "SingleStack",
+                "load_balancer_class": "",
+                "load_balancer_ip": "",
+                "load_balancer_source_ranges": null,
+                "port": [
+                  {
+                    "app_protocol": "",
+                    "name": "httpport",
+                    "node_port": 30080,
+                    "port": 80,
+                    "protocol": "TCP",
+                    "target_port": "80"
+                  },
+                  {
+                    "app_protocol": "",
+                    "name": "httpsport",
+                    "node_port": 30443,
+                    "port": 443,
+                    "protocol": "TCP",
+                    "target_port": "443"
+                  }
+                ],
+                "publish_not_ready_addresses": false,
+                "selector": {
+                  "app": "nginx"
+                },
+                "session_affinity": "None",
+                "session_affinity_config": [],
+                "type": "NodePort"
+              }
+            ],
+            "status": [
+              {
+                "load_balancer": [
+                  {
+                    "ingress": []
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_load_balancer": true
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "kubernetes_service",
+      "name": "php",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "dev/laravel",
+            "metadata": [
+              {
+                "annotations": null,
+                "generate_name": "",
+                "generation": 0,
+                "labels": {
+                  "app": "laravel"
+                },
+                "name": "laravel",
+                "namespace": "dev",
+                "resource_version": "135519",
+                "uid": "159cab0b-5e35-4374-9180-de063b8547ae"
+              }
+            ],
+            "spec": [
+              {
+                "allocate_load_balancer_node_ports": true,
+                "cluster_ip": "10.110.42.102",
+                "cluster_ips": [
+                  "10.110.42.102"
+                ],
+                "external_ips": null,
+                "external_name": "",
+                "external_traffic_policy": "",
+                "health_check_node_port": 0,
+                "internal_traffic_policy": "Cluster",
+                "ip_families": [
+                  "IPv4"
+                ],
+                "ip_family_policy": "SingleStack",
+                "load_balancer_class": "",
+                "load_balancer_ip": "",
+                "load_balancer_source_ranges": null,
+                "port": [
+                  {
+                    "app_protocol": "",
+                    "name": "phpfpm",
+                    "node_port": 0,
+                    "port": 9000,
+                    "protocol": "TCP",
+                    "target_port": "9000"
+                  }
+                ],
+                "publish_not_ready_addresses": false,
+                "selector": {
+                  "app": "laravel"
+                },
+                "session_affinity": "None",
+                "session_affinity_config": [],
+                "type": "ClusterIP"
+              }
+            ],
+            "status": [
+              {
+                "load_balancer": [
+                  {
+                    "ingress": []
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_load_balancer": true
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

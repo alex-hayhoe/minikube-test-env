@@ -1,6 +1,6 @@
 .terraform/
-#terraform.tfstate
-#terraform.tfstate.backup
+terraform.tfstate
+terraform.tfstate.backup
 *.yaml
 .DS_Store
 
@@ -12,3 +12,6 @@
 *.tfstate.*
 
 .terraform.lock.hcl
+
+minikube-test-env/modules/dev.backup
+minikube-test-env/modules/dev
