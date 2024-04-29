@@ -1,1 +1,0 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"minio","Source":"./modules/minio","Dir":""},{"Key":"mysql","Source":"./modules/mysql","Dir":""},{"Key":"namespace","Source":"./modules/namespace","Dir":""},{"Key":"nginx","Source":"./modules/nginx","Dir":""}]}
