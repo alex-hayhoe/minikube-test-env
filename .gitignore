@@ -1,8 +1,5 @@
-minikube-test-env/modules/.terraform.lock.hcl
-minikube-test-env/modules/dev
-minikube-test-env/modules/dev.backup
-minikube-test-env/modules/terraform.tfstate
-minikube-test-env/modules/terraform.tfstate.backup
-minikube-test-env/modules/test
-minikube-test-env/modules/test.backup
-minikube-test-env/modules/.terraform/*
+.terraform/
+#terraform.tfstate
+#terraform.tfstate.backup
+*.yaml
+.DS_Store
