@@ -15,3 +15,5 @@ terraform.tfstate.backup
 
 minikube-test-env/modules/dev.backup
 minikube-test-env/modules/dev
+minikube-test-env/modules/test
+minikube-test-env/modules/test.backup
