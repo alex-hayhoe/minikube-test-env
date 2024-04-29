@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"minio","Source":"./resources/minio","Dir":""},{"Key":"mysql","Source":"./resources/mysql","Dir":""},{"Key":"namespace","Source":"./resources/namespace","Dir":""},{"Key":"nginx","Source":"./resources/nginx","Dir":""}]}

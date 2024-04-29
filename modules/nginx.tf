@@ -28,6 +28,14 @@ resource "kubernetes_deployment" "nginx" {
       }
 
       spec {
+        volume {
+          name = "nginx-volume"
+
+          config_map {
+            name = "nginx-config"
+          }
+        }
+
         container {
           name  = "nginx"
           image = "nginx:latest"
@@ -39,22 +47,4 @@ resource "kubernetes_deployment" "nginx" {
       }
     }
   }
-}
-
-resource "helm_release" "nginx_ingress" {
-  name       = "nginx-ingress-controller"
-  namespace  = var.namespace_name
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "nginx-ingress-controller"
-
-  set {
-    name  = "service.type"
-    value = "NodePort"
-  }
-
-  set {
-    name  = "service.nodePorts.http"
-    value = "30201"
-  }
-  
 }

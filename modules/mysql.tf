@@ -73,6 +73,16 @@ resource "kubernetes_deployment" "mysql" {
             value = var.mysql_db_name
           }
 
+          env {
+            name  = "DB_USERNAME"
+            value = var.mysql_username
+          }
+
+          env {
+            name  = "DB_PASSWORD"
+            value = var.mysql_root_password
+          }
+
           port {
             container_port = 3306
           }
@@ -94,101 +104,3 @@ resource "kubernetes_deployment" "mysql" {
     }
   }
 }
-
-resource "kubernetes_job" "mysql-init" {
-  metadata {
-    name      = "mysql-init"
-    namespace = var.namespace_name
-  }
-
-  spec {
-    template {
-      metadata {
-        labels = {
-          app = "mysql-init"
-        }
-      }
-
-      spec {
-        container {
-          name  = "mysql-init"
-          image = "mysql:latest"
-          command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE DATABASE IF NOT EXISTS '${var.mysql_db_name}''"]        
-        }
-        restart_policy = "Never"
-      }
-    }
-  }
-}
-
-
- resource "kubernetes_job" "mysql-init-user" {
-  metadata {
-    name      = "mysql-init-user"
-    namespace = var.namespace_name
-  }
-
-  spec {
-   template {
-     metadata {
-       labels = {
-        app = "mysql-init-user"
-       }
-     }
-
-      spec {
-       container {
-        name  = "mysql-init-user"
-        image = "mysql:latest"
-        command = ["sh", "-c", "mysql -h mysql-service -P 3306  --protocol=tcp -uroot -p${var.mysql_root_password} -e 'CREATE USER '${var.mysql_username}'@'localhost' IDENTIFIED BY '${var.mysql_username_password}''"]
-       }
-     }
-    }
-  }
-}
-
-# resource "kubernetes_job" "mysql-init-user-priviledges" {
-#   metadata {
-#     name      = "mysql-init-user-priviledges"
-#     namespace = var.namespace_name
-#   }
-
-#   spec {
-#     template {
-#       metadata {
-#         labels = {
-#           app = "mysql-init-user-priviledges"
-#         }
-#       }
-
-#       spec {
-#         container {
-#           name  = "mysql-init-user-priviledges"
-#           image = "mysql:latest"
-
-#           env {
-#             name  = "MYSQL_ROOT_PASSWORD"
-#             value = var.mysql_root_password
-#           }
-
-#           env {
-#             name  = "MYSQL_USER"
-#             value = var.mysql_username
-#           }          
-
-#           env {
-#             name  = "MYSQL_USER_PW"
-#             value = var.mysql_username_password
-#           }
-
-#           env {
-#             name  = "MYSQL_DATABASE"
-#             value = var.mysql_db_name
-#           }
-        
-#           command = ["sh", "-c", "mysql -h mysql-service -P 3306 --protocol=tcp -uroot -p${var.mysql_root_password} -e 'GRANT ALL PRIVILEGES ON '${var.mysql_db_name}' TO '${var.mysql_username}'@'localhost''"]
-#         }
-#       }
-#     }
-#   }
-# }

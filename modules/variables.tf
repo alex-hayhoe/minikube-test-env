@@ -32,3 +32,29 @@ variable "minio_secret_key" {
   description = "The secret key for MinIO."
   default     = "secret_key"
 }
+
+variable "minio_user" {
+  description = "The user for MinIO."
+  default     = "default"
+}
+
+variable "minio_user_password" {
+  description = "The password for MinIO."
+  default     = "default"
+}
+
+
+variable "laravel_replicas" {
+  description = "Replica amount for laravel containers"
+  default     = "1"
+}
+
+variable "NodePort_httpsport" {
+  description = "httpsport Nodeport"
+  default     = "1"
+}
+
+variable "NodePort_httpport" {
+  description = "httpport Nodeport"
+  default     = "1"
+}

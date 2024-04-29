@@ -5,7 +5,7 @@ resource "kubernetes_deployment" "laravel" {
   }
 
   spec {
-    replicas = 1
+    replicas = var.laravel_replicas
 
     selector {
       match_labels = {
@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "laravel" {
       spec {
         container {
           name  = "laravel"
-          image = "bitnami/laravel:10.3.3-debian-12-r9"
+          image = "lerufic/laravel:latest"
 
           env {
             name  = "APP_ENV"
@@ -78,7 +78,9 @@ resource "kubernetes_deployment" "laravel" {
           }
 
           port {
-            container_port = 80
+            name           = "port1"
+            container_port = 9000
+            protocol       = "TCP" 
           }
         }
       }
